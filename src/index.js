@@ -21,6 +21,18 @@ function checksExistsUserAccount(request, response, next) {
   request.user = user
   return next()
 }
+
+function checksExistsTodo(request, response, next) {
+  const { user } = request
+  const { id } = request.params
+
+  const todoExists = user.todos.find(todo => todo.id === id)
+  if(!todoExists) {
+    return response.status(404).json({error: 'Task not found'})
+  }
+
+  return next()
+}
 }
 
 app.post('/users', (request, response) => {
