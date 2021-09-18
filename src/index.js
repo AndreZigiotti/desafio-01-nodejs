@@ -33,6 +33,9 @@ function checksExistsTodo(request, response, next) {
 
   return next()
 }
+
+function userAlreadyExists(username) {
+  return users.find(user => user.username === username)
 }
 
 app.post('/users', (request, response) => {
