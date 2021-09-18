@@ -104,8 +104,15 @@ app.patch('/todos/:id/done', checksExistsUserAccount, checksExistsTodo, (request
   return response.json(todoToUpdate)
 });
 
-app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+app.delete('/todos/:id', checksExistsUserAccount, checksExistsTodo, (request, response) => {
+  const { user } = request
+  const { id } = request.params
+
+  const todoToRemove = user.todos.find(todo => todo.id === id)
+
+  user.todos.splice(todoToRemove, 1)
+
+  return response.status(204).send()
 });
 
 module.exports = app;
