@@ -93,8 +93,15 @@ app.put('/todos/:id', checksExistsUserAccount, checksExistsTodo, (request, respo
   return response.json(todoToUpdate)
 });
 
-app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+app.patch('/todos/:id/done', checksExistsUserAccount, checksExistsTodo, (request, response) => {
+  const { user } = request
+  const { id } = request.params
+
+  const todoToUpdate = user.todos.find(todo => todo.id === id)
+
+  Object.assign(todoToUpdate, {done: true})
+
+  return response.json(todoToUpdate)
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
