@@ -40,6 +40,25 @@ function userAlreadyExists(username) {
 
 app.post('/users', (request, response) => {
   // Complete aqui
+  const { name, username } = request.body
+
+  if(!name || !username) {
+    return response.status(400).json({error: 'Name and Username must be provided!'})
+  }
+
+  if(userAlreadyExists(username)) {
+    return response.status(400).json({error: 'User already exists'})
+  }
+
+  const user = {
+    id: uuidv4(),
+    name,
+    username,
+    todos: []
+  }
+
+  users.push(user)
+  return response.status(201).json(user)
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
